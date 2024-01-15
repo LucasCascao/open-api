@@ -20,7 +20,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerValidationClient customerValidationClient;
 
-    // Operação CREATE
+    @Override
     public Customer createCustomer(Customer customer) {
         CustomerEntity customerEntity = customerMapper.toEntity(customer);
         Long id = customerRepository.save(customerEntity).getId();
@@ -28,17 +28,18 @@ public class CustomerServiceImpl implements CustomerService {
         return customer;
     }
 
-    // Operação READ
+    @Override
     public List<Customer> getAllCustomers() {
         return customerMapper.toDomainList(customerRepository.findAll());
     }
 
+    @Override
     public Customer getCustomerById(Long customerId) {
         Optional<CustomerEntity> customerOptional = customerRepository.findById(customerId);
         return customerMapper.toDomain(customerOptional.orElseThrow(RuntimeException::new));
     }
 
-    // Operação UPDATE
+    @Override
     public Customer updateCustomer(Long customerId, Customer newCustomerData) {
          CustomerEntity customerEntity = customerRepository.findById(customerId).map(customer -> {
             customer.setName(newCustomerData.getName());
@@ -50,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customerMapper.toDomain(customerEntity);
     }
 
-    // Operação DELETE
+    @Override
     public void deleteCustomer(Long customerId) {
         customerRepository.deleteById(customerId);
     }
