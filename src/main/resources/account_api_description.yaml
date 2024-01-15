@@ -1,0 +1,286 @@
+openapi: 3.0.1
+info:
+  title: API de Exemplo
+  description: Documentação Swagger para endpoints CRUD de Customer e Product
+  version: 1.0.0
+
+components:
+  schemas:
+    RegisterCustomerRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        lastName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        email:
+          type: string
+          format: email
+
+    RegisterCustomerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        lastName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        email:
+          type: string
+          format: email
+
+    SearchCustomerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        lastName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        email:
+          type: string
+          format: email
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        value:
+          type: number
+          format: float
+        quantity:
+          type: integer
+          format: int32
+
+paths:
+  /customers:
+    get:
+      summary: Lista todos os clientes
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  
+                  $ref: '#/components/schemas/SearchCustomerResponse'
+              examples:
+                customers:
+                  - id: 1
+                    name: John
+                    lastName: Doe
+                    age: 30
+                    email: john@example.com
+
+    post:
+      summary: Cria um novo cliente
+      requestBody:
+        description: Dados do cliente a serem criados
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterCustomerRequest'
+            example:
+              name: John
+              lastName: Doe
+              age: 30
+              email: john@example.com
+      responses:
+        '201':
+          description: Cliente criado com sucesso
+          content:
+            application/json:
+              example:
+                id: 1
+                name: John
+                lastName: Doe
+                age: 30
+                email: john@example.com
+
+  /customers/{customerId}:
+    get:
+      summary: Retorna detalhes de um cliente específico
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: ID do cliente
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                id: 1
+                name: John
+                lastName: Doe
+                age: 30
+                email: john@example.com
+
+    put:
+      summary: Atualiza um cliente existente
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: ID do cliente
+          schema:
+            type: integer
+      requestBody:
+        description: Dados do cliente a serem atualizados
+        required: true
+        content:
+          application/json:
+            example:
+              name: Updated John
+              lastName: Doe
+              age: 31
+              email: john@example.com
+      responses:
+        '200':
+          description: Cliente atualizado com sucesso
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Updated John
+                lastName: Doe
+                age: 31
+                email: john@example.com
+
+    delete:
+      summary: Exclui um cliente
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: ID do cliente
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Cliente excluído com sucesso
+
+  /products:
+    get:
+      summary: Lista todos os produtos
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                products:
+                  - id: 1
+                    name: Product A
+                    value: 19.99
+                    quantity: 10
+
+    post:
+      summary: Cria um novo produto
+      requestBody:
+        description: Dados do produto a serem criados
+        required: true
+        content:
+          application/json:
+            example:
+              name: Product A
+              value: 19.99
+              quantity: 10
+      responses:
+        '201':
+          description: Produto criado com sucesso
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Product A
+                value: 19.99
+                quantity: 10
+
+  /products/{productId}:
+    get:
+      summary: Retorna detalhes de um produto específico
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: ID do produto
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Product A
+                value: 19.99
+                quantity: 10
+
+    put:
+      summary: Atualiza um produto existente
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: ID do produto
+          schema:
+            type: integer
+      requestBody:
+        description: Dados do produto a serem atualizados
+        required: true
+        content:
+          application/json:
+            example:
+              name: Updated Product A
+              value: 24.99
+              quantity: 15
+      responses:
+        '200':
+          description: Produto atualizado com sucesso
+          content:
+            application/json:
+              example:
+                id: 1
+                name: Updated Product A
+                value: 24.99
+                quantity: 15
+
+    delete:
+      summary: Exclui um produto
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: ID do produto
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Produto excluído com sucesso
